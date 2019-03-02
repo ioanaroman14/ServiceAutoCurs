@@ -1,8 +1,10 @@
 package UI;
 
 import Domain.Car;
+
 import Service.CarService;
 
+import java.util.Map;
 import java.util.Scanner;
 
 public class Console {
@@ -30,11 +32,38 @@ public class Console {
             String option = scanner.nextLine();
             if (option.equals("1")) {
                 handleServiceEntry();
+            } else if (option.equals("2")) {
+                handleServiceExit();
+            } else if (option.equals("3")) {
+                handleStandsReport();
             } else if (option.equals("a")) {
                 handleShowAll();
             } else if (option.equals("x")) {
                 break;
             }
+        }
+    }
+
+    private void handleStandsReport() {
+        Map<Double, Integer> reports = service.getReports();
+        for(Double price:reports.keySet())
+            System.out.println("Stand:  " +  reports.get(price)   + "  price:  " + price);
+
+
+    }
+
+    private void handleServiceExit() {
+        try {
+            System.out.println("Dati standul:");
+            int stand = Integer.parseInt(scanner.nextLine());
+            System.out.println("Dati raportul de service:");
+            String report = scanner.nextLine();
+            System.out.println("Dati pretul facturat:");
+            double price = Double.parseDouble(scanner.nextLine());
+
+            service.exitService(stand, report, price);
+        } catch (RuntimeException runtimeException) {
+            System.out.println("Avem erori: " + runtimeException.getMessage());
         }
     }
 
